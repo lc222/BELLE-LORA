@@ -1,0 +1,9 @@
+datasets
+loralib
+git+https://github.com/huggingface/transformers.git
+accelerate
+deepspeed
+bitsandbytes
+git+https://github.com/huggingface/peft.git
+gradio
+appdirs
