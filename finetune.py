@@ -5,9 +5,6 @@ import torch
 from transformers import AutoTokenizer, TrainingArguments, Trainer, AutoModelForCausalLM, IntervalStrategy
 from torch.utils.data import Dataset, random_split
 import json
-import pandas as pd
-
-
 from peft import (
     prepare_model_for_int8_training,
     LoraConfig,
@@ -15,13 +12,6 @@ from peft import (
     get_peft_model_state_dict,
     TaskType
 )
-
-class CastOutputToFloat(nn.Sequential):
-    def forward(self, x): return super().forward(x).to(torch.float32)
-
-
-ckpt_path = './Bloomz-7b1-mt/'
-from transformers import AutoTokenizer, TrainingArguments, Trainer, AutoModelForCausalLM, IntervalStrategy
 
 torch.manual_seed(42)
 tokenizer = AutoTokenizer.from_pretrained("./Bloomz-7b1-mt")
@@ -31,10 +21,7 @@ model.gradient_checkpointing_enable()
 model.enable_input_require_grads()
 model.is_parallelizable = True
 model.model_parallel = True
-# model.lm_head = CastOutputToFloat(model.lm_head)
 model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
-
-#model = prepare_model_for_int8_training(model)
 
 LORA_R = 8
 LORA_ALPHA = 32
